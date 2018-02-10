@@ -3,20 +3,16 @@ import time
 import saveImage
 import numpy as np
 
-##################
 DELAY = 0.02
-USE_CAM = 1
 IS_FOUND = 0
 
 MORPH = 7
 CANNY = 250
-##################
 _width  = 600.0
 _height = 420.0
 _margin = 0.0
-##################
 
-if USE_CAM: video_capture = cv2.VideoCapture(0)
+video_capture = cv2.VideoCapture(0)
 
 corners = np.array(
 	[
@@ -31,11 +27,8 @@ pts_dst = np.array( corners, np.float32 )
 
 while True :
 
-	if USE_CAM :
-		ret, rgb = video_capture.read()
-	else :
-		ret = 1
-		rgb = cv2.imread( "opencv.jpg", 1 )
+	ret, rgb = video_capture.read()
+
 
 	if ( ret ):
 
@@ -61,10 +54,7 @@ while True :
 
 				if ( len( approx ) == 4 ):
 					IS_FOUND = 1
-					#M = cv2.moments( cont )
-					#cX = int(M["m10"] / M["m00"])
-					#cY = int(M["m01"] / M["m00"])
-					#cv2.putText(rgb, "Center", (cX, cY), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 3)
+
 
 					pts_src = np.array( approx, np.float32 )
 
@@ -75,8 +65,6 @@ while True :
 
 				else : pass
 
-		#cv2.imshow( 'closed', closed )
-		#cv2.imshow( 'gray', gray )
 		cv2.namedWindow( 'edges', cv2.CV_WINDOW_AUTOSIZE )
 		cv2.imshow( 'edges', edges )
 
@@ -99,5 +87,5 @@ while True :
 		print "Stopped"
 		break
 
-if USE_CAM : video_capture.release()
+video_capture.release()
 cv2.destroyAllWindows()
